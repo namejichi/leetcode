@@ -1,0 +1,68 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if (s.size() <= 1) {
+            return s.size();
+        }
+        int maxL = 0;
+        unordered_map<char, int> mp;
+        int start = 0;
+        int end = 0;
+        while (end < s.size()) {
+            if (mp.find(s[end]) != mp.end()) {
+                maxL = max(maxL, end - start);
+                int newstart = mp[s[end]];
+                while (start <= newstart) {
+                    mp.erase(s[start]);
+                    start++;
+                }
+            }
+            mp[s[end]] = end;
+            end++;
+        }
+        maxL = max(maxL, end - start);
+        return maxL;
+    }
+};
+/*better solution：
+if (s.size() == 0) {
+    return 0;
+}
+int start = 0;
+int maxStart = 0;
+int curLen = 0;
+int maxLen = 0;
+vector<int> pos(256, -1);
+for (int i = 0; i < s.size(); i++) {
+    if (pos[s[i]] >= start) {
+        start = pos[s[i]] + 1;
+        curLen = i - start + 1;
+        pos[s[i]] = i;
+    }
+    else {
+        pos[s[i]] = i;
+        curLen++;
+    }
+    if (curLen > maxLen) {
+        maxLen = curLen;
+        maxStart = start;
+    }
+}
+return maxLen;
+*/
+//上面的滑动窗方法：O(N)时间，O(1)空间，其实可以简化成如下DP的代码：
+/*
+int lengthOfLongestSubstring(string s) {
+    // for ASCII char sequence, use this as a hashmap
+    vector<int> charIndex(256, -1);
+    int longest = 0, m = 0;
+
+    for (int i = 0; i < s.length(); i++) {
+        m = max(charIndex[s[i]] + 1, m);    // automatically takes care of -1 case
+        charIndex[s[i]] = i;
+        longest = max(longest, i - m + 1);
+    }
+
+    return longest;
+}
+*/
