@@ -1,0 +1,26 @@
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if (strs.size() == 0) {
+            return "";
+        }
+        string res = strs[0];
+        for (int i = 1; i < strs.size(); i++) {
+            findCommon(res, strs[i]);
+            if (res == "") {
+                return "";
+            }
+        }
+        return res;
+    }
+    void findCommon(string& s1, string& s2) {
+        int l = min(s1.size(), s2.size());
+        int i;
+        for (i = 0; i < l; i++) {
+            if (s1[i] != s2[i]) {
+                break;
+            }
+        }
+        s1 = s1.substr(0, i);
+    }
+};
