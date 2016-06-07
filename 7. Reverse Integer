@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int reverse(int x) {
+        //正负号、末尾有0、越界
+        
+        //方一：常规
+        int res = 0;
+        while (x != 0) {
+            int tmp = res * 10 + (x % 10);
+            if (tmp / 10 != res) {
+                return 0;
+            }
+            res = tmp;
+            x = x / 10;
+        }
+        return res;
+        
+        /*
+        //方二：stringstream,慢
+        int sign = x < 0 ? 0 : 1;
+        stringstream ss;
+        ss << abs(x);
+        string s;
+        ss >> s;
+        reverse(s);
+        stringstream sss;
+        sss << s;
+        long long res;
+        sss >> res;
+        cout << res << endl;
+        if ((sign && res > INT_MAX) || (!sign && -res < INT_MIN)) {
+            return 0;
+        }
+        return sign ? res : -res;
+        */
+    }
+    void reverse(string& s) {
+        int l = 0;
+        int r = s.size() - 1;
+        while (l < r) {
+            char a = s[l];
+            s[l] = s[r];
+            s[r] = a;
+            l++;
+            r--;
+        }
+    }
+};
