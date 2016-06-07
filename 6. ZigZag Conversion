@@ -1,0 +1,73 @@
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if (s.size() == 0 || numRows <= 0) {
+            return "";
+        }
+        if (numRows == 1) {
+            return s;
+        }
+        vector<string> vs(numRows, "");
+        int i = 0;
+        int row = 0;
+        int down = 1;
+        while (i < s.size()) {
+            vs[row].push_back(s[i]);
+            row = down ? row + 1 : row - 1;
+            if (row == -1) {
+                row = 1;
+                down = 1 - down;
+            }
+            if (row == numRows) {
+                row = numRows - 2;
+                down = 1 - down;
+            }
+            i++;
+        }
+        string res = "";
+        for (int i = 0; i < numRows; i++) {
+            res += vs[i];
+        }
+        return res;
+    }
+};
+/*方二：来自discuss，算出相邻字符的pos按照行的顺序来写, 更快更节省空间：
+n=numRows
+Δ=2n-2    1                           2n-1                         4n-3
+Δ=        2                     2n-2  2n                    4n-4   4n-2
+Δ=        3               2n-3        2n+1              4n-5       .
+Δ=        .           .               .               .            .
+Δ=        .       n+2                 .           3n               .
+Δ=        n-1 n+1                     3n-3    3n-1                 5n-5
+Δ=2n-2    n                           3n-2                         5n-4
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        string result="";
+        if(numRows==1)
+            return s;
+        int step1,step2;
+        int len=s.size();
+        for(int i=0;i<numRows;++i){
+            step1=(numRows-i-1)*2;
+            step2=(i)*2;
+            int pos=i;
+            if(pos<len)
+                result+=s.at(pos);
+            while(1){
+                pos+=step1;
+                if(pos>=len)
+                    break;
+                if(step1)
+                    result+=s.at(pos);
+                pos+=step2;
+                if(pos>=len)
+                    break;
+                if(step2)
+                    result+=s.at(pos);
+            }
+        }
+        return result;
+    }
+};
+*/
