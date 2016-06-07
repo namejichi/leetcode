@@ -1,0 +1,37 @@
+class Solution {
+public:
+    string intToRoman(int num) {
+        /*
+        //方一：列举
+        string result = "";
+        string roman[4][10] = {  
+            {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"},   //个
+            {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"},   //十
+            {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"},   //百
+            {"", "M", "MM", "MMM"}                                          //千
+        }; 
+        int digit = 0;
+        while (num) {
+            result = roman[digit][num % 10] + result;
+            num /= 10;
+            digit++;
+        }
+        return result;
+        */
+        //方二：discuss,贪心
+        string str;    
+        string symbol[]={"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};    
+        int value[]=    {1000,900,500,400, 100, 90,  50, 40,  10, 9,   5,  4,   1}; 
+        int i = 0;
+        while (num)
+        {  
+            while(num>=value[i])  
+            {  
+                num-=value[i];  
+                str+=symbol[i];  
+            } 
+            i++;
+        }  
+        return str; 
+    }
+};
