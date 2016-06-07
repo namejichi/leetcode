@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> res;
+        if (nums.size() < 3) {
+            return res;
+        }
+        vector<int> cur(3, 0);
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size() - 2; i++) {
+            if (i != 0 && nums[i] == nums[i - 1]) {   //注意！第一个数注意跳过重复元素！
+                continue;
+            }
+            int num1 = nums[i];
+            int l = i + 1;
+            int r = nums.size() - 1;
+            while (l < r) {
+                int num2 = nums[l];
+                int num3 = nums[r];
+                int sum = num1 + num2 + num3;
+                if (sum == 0) {
+                    cur[0] = num1;
+                    cur[1] = num2;
+                    cur[2] = num3;
+                    res.push_back(cur);
+                    while (l < r && num2 == nums[l]) {
+                        l++;
+                    } 
+                }
+                else if (sum > 0){
+                    r--;
+                }
+                else {
+                    l++;
+                }
+            }
+        }
+        return res;
+    }
+};
