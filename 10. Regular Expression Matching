@@ -1,0 +1,65 @@
+/*
+//方一：递归，曾WA处"a","ab*"，104ms
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        return isMatchHelper(s, 0, p, 0);
+    }
+    bool isMatchHelper(string& s, int pos1, string& p, int pos2) {
+        if (s.size() == pos1 && p.size() == pos2) {
+            return true;
+        }
+        
+        //错误的！
+        //if (s.size() == pos1 || p.size() == pos2) {
+        //    return false;
+        //}
+
+        if (pos2 + 1 < p.size() && p[pos2 + 1] == '*') {
+            if (isMatchHelper(s, pos1, p, pos2 + 2)) {
+                return true;
+            }
+            while (pos1 < s.size() && (p[pos2] == s[pos1++] || p[pos2] == '.')) { //注意pos1 < s.size()
+                if (isMatchHelper(s, pos1, p, pos2 + 2)) {
+                    return true;
+                }
+            }
+        }
+        else if (pos1 < s.size() && pos2 < p.size()){
+            if (s[pos1] == p[pos2] || p[pos2] == '.') {
+                if (isMatchHelper(s, pos1 + 1, p, pos2 + 1)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
+*/
+//方二：动归,16ms
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int size1 = s.size();
+        int size2 = p.size();
+        vector<vector<bool>> match(size1 + 1, vector<bool>(size2 + 1, false));
+        
+        //注意如何初始化
+        match[0][0] = true;
+        for (int j = 1; j <= size2; j++) {
+            match[0][j] = (j > 1) && match[0][j - 2] && (p[j - 1] == '*');
+        }
+        
+        for (int i = 1; i <= size1; i++) {
+            for (int j = 1; j <= size2; j++) {
+                if (p[j - 1] == '*') {
+                    match[i][j] = (j > 1) && (match[i][j - 2] || (match[i - 1][j] && (s[i - 1] == p[j - 2] || p[j - 2] == '.')));
+                }
+                else {
+                    match[i][j] = match[i - 1][j - 1] && (s[i - 1] == p[j - 1] || p[j - 1] == '.');
+                }
+            }
+        }
+        return match[size1][size2];
+    }
+};
