@@ -1,0 +1,80 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+struct cmp {
+  bool operator()(ListNode* a, ListNode* b){
+      return a->val > b->val;
+  }  
+};
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        /*
+        //方一：二二合并
+        if (lists.size() == 0) {
+            return NULL;
+        }
+        vector<ListNode*> cur;
+        while (lists.size() > 1) {
+            int i;
+            for (i = 0; i < lists.size() - 1; i = i + 2) {
+                cur.push_back(merge2Lists(lists[i], lists[i + 1]));
+            }
+            if (lists.size() % 2) {
+                cur.push_back(lists[i]);
+            }
+            lists = cur;
+            cur.clear();
+        }
+        return lists[0];
+        */
+        //方二：堆
+        if (lists.size() == 0) {
+            return NULL;
+        }
+        priority_queue<ListNode*, vector<ListNode*>, cmp> q;
+        for (int i = 0; i < lists.size(); i++) {
+            if (lists[i]) {    //注意！！！
+                q.push(lists[i]);
+            }
+        }
+        ListNode* dummy = new ListNode(0);
+        ListNode* p = dummy;
+        while (!q.empty()) {
+            p->next = q.top();
+            p = p->next;
+            q.pop();
+            if (p->next) {
+                q.push(p->next);
+            }
+        }
+        return dummy->next;
+    }
+    ListNode* merge2Lists(ListNode* l1, ListNode* l2) {
+        ListNode* dummy = new ListNode(0);
+        ListNode* p = dummy;
+        while (l1 && l2) {
+            if (l1->val < l2->val) {
+                p->next = l1;
+                l1 = l1->next;
+            }
+            else {
+                p->next = l2;
+                l2 = l2->next;
+            }
+            p = p->next;
+        }
+        if (l1) {
+            p->next = l1;
+        }
+        if (l2) {
+            p->next = l2;
+        }
+        return dummy->next;
+    }
+};
