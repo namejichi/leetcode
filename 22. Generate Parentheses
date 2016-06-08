@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        string cur = "";
+        generate(res, cur, n, n);
+        return res;
+    }
+    void generate(vector<string>& res, string cur, int lleft, int rleft) {
+        if (lleft == 0 && rleft == 0) {
+            res.push_back(cur);
+            return;
+        }
+        if (lleft < rleft) {
+            generate(res, cur + ')', lleft, rleft - 1);
+        }
+        if (lleft > 0) {
+            generate(res, cur + '(', lleft - 1, rleft);
+        }
+    }
+};
