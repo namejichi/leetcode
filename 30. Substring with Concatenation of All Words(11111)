@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        /*
+        //方一：两个map
+        vector<int> result;
+        if (words.empty() || s.size() == 0) {
+            return result;
+        }
+        int num = words.size();
+        int size = words[0].size();
+        unordered_map<string, int> Mp;
+        for (int i = 0; i < num; i++) {
+            Mp[words[i]]++;
+        }
+        for (int i = 0; i < s.size() - num * size + 1; i++) {  //i即是start
+            unordered_map<string, int> curMp;
+            int j = 0;
+            for (j = 0; j < num; j++) {
+                string tmp = s.substr(i + j * size, size);
+                if (Mp.find(tmp) != Mp.end() && curMp[tmp] < Mp[tmp]) {
+                    curMp[tmp]++;
+                }
+                else {
+                    break;
+                }
+            }
+            if (j == num) {
+                result.push_back(i);
+            }
+        }
+        return result;
+        */
+        //方二：trie树，https://leetcode.com/discuss/20055/accepted-recursive-solution-using-trie-tree
+        //方三：滑动窗口没看懂……
+    }
+};
