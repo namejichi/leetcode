@@ -1,0 +1,47 @@
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> res(2, -1);
+        int l = 0;
+        int r = nums.size() - 1;
+        while (l < r) {
+            int m = l + (r - l) / 2;//后面有r=m，为避免死循环，这里不加一
+            if (nums[m] < target) {
+                l = m + 1;
+            }
+            else if (nums[m] > target) {
+                r = m - 1;
+            }
+            else {
+                r = m;
+            }
+        }
+        if (nums[l] == target) {
+            res[0] = l;
+        }
+        else {
+            return res;
+        }
+        l = 0;
+        r = nums.size() - 1;
+        while (l < r) {
+            int m = l + (r - l) / 2 + 1; //后面有l=m，为避免死循环，这里加一
+            if (nums[m] < target) {
+                l = m + 1;
+            }
+            else if (nums[m] > target) {
+                r = m - 1;
+            }
+            else {
+                l = m;
+            }
+        }
+        if (nums[l] == target) {
+            res[1] = l;
+        }
+        else {
+            return res;
+        }
+        return res;
+    }
+};
