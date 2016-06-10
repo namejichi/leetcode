@@ -1,0 +1,55 @@
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        //注意题目，子串要求连续，看了discuss
+        /*
+        //方一：stack，存于栈中的是没有被匹配上的括号的下标
+        int res = 0;
+        int size = s.size();
+        stack<int> stk;
+        stk.push(-1);
+        for (int i = 0; i < size; i++) {
+            if (s[i] == '(') {
+                stk.push(i);
+            }
+            else {
+                if (stk.size() > 1 && s[stk.top()] == '(') {
+                    stk.pop();
+                }
+                else {
+                    stk.push(i);
+                }
+            }
+        }
+        stk.push(size);
+        while (stk.size() >= 2) {
+            int a = stk.top();
+            stk.pop();
+            int b = stk.top();
+            res = max(res, a - b - 1);
+        }
+        return res;
+        */
+        //方二：DP
+        int size = s.size();
+        if (size <= 1) {
+            return 0;
+        }
+        int result = 0;
+        vector<int> longest(size, 0); //it stores the longest length of valid parentheses which is end at i. 
+        for (int i = 1; i < size; i++) {
+            if (s[i] == ')') {
+                if (s[i - 1] == '(') {
+                    longest[i] = (i >= 2) ? (longest[i - 2] + 2) : 2;
+                }
+                else {
+                    if (i - longest[i - 1] - 1 >= 0 && s[i - longest[i - 1] - 1] == '(') {
+                        longest[i] = longest[i - 1] + 2 + ((i - 2 - longest[i - 1] >= 0) ? longest[i - 2 - longest[i - 1]] : 0); //关键，注意最后一项，拼接
+                    }
+                }
+                result = max(result, longest[i]);
+            }
+        }
+        return result;
+    }
+};
