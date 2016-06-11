@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        nums.insert(nums.begin(), INT_MIN);
+        nums.push_back(INT_MAX);
+        int l = 0;
+        int r = nums.size() - 1;
+        while (l < r) {
+            int m = l + (r - l) / 2;  //此处不加一
+            if (nums[m] >= target) {  //注意等号的地方
+                r = m;
+            }
+            else {
+                l = m + 1;
+            }
+        }      
+        return l - 1;
+    }
+};
