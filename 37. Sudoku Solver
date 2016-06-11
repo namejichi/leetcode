@@ -1,0 +1,61 @@
+class Solution {
+    bool end = false;
+    vector<vector<bool>> row;
+    vector<vector<bool>> col;
+    vector<vector<bool>> son;
+public:
+    void solveSudoku(vector<vector<char>>& board) {
+        row.resize(9, vector<bool>(9, false));
+        col.resize(9, vector<bool>(9, false));
+        son.resize(9, vector<bool>(9, false));
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.') {
+                    int a = board[i][j] - '1';
+                    row[i][a] = true;
+                    col[j][a] = true;
+                    son[3 * (i / 3) + (j / 3)][a] = true;
+                }
+            }
+        }
+        dfs(board, 0, 0);
+    }
+    void dfs(vector<vector<char>>& board, int i, int j) { //注意遍历方式：一行行的
+        if (end) {
+            return;
+        }
+        if (i == 9) {
+            end = true;
+            return;
+        }
+        if (board[i][j] != '.') {
+            if (j < 8) {
+                dfs(board, i, j + 1);
+            }
+            else {
+                dfs(board, i + 1, 0);
+            }
+            if (end) {  //注意
+                return;
+            }
+        }
+        else {
+            int temp = 3 * (i / 3) + j / 3;
+            for (int n = 0; n < 9; n++) {
+                if (!col[j][n] && !row[i][n] && !son[temp][n]){
+                    board[i][j] = n + '1';
+                    col[j][n] = row[i][n] = son[temp][n] = true;
+                    if (j < 8) {
+                        dfs(board, i, j + 1);
+                    }
+                    else {
+                        dfs(board, i + 1, 0);
+                    }
+                    col[j][n] = row[i][n] = son[temp][n] = false;
+                    if (end)  return;
+                }
+            }
+            board[i][j] = '.';
+        }
+    }
+};
