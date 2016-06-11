@@ -1,0 +1,68 @@
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        vector<vector<bool>> row(9, vector<bool>(9, false));
+        vector<vector<bool>> col(9, vector<bool>(9, false));
+        vector<vector<bool>> son(9, vector<bool>(9, false));
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.') {
+                    int a = board[i][j] - '1';
+                    if (row[i][a]) {
+                        return false;
+                    }
+                    row[i][a] = true;
+                    if (col[j][a]) {
+                        return false;
+                    }
+                    col[j][a] = true;
+                    int pos = 3 * (i / 3) + (j / 3);
+                    if (son[pos][a]) {
+                        return false;   
+                    }
+                    son[pos][a] = true;
+                }
+            }
+        }
+        return true;
+    }
+};
+/*方二：
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        //用函数避免写三次,也可以不用set，该用三个数组
+        for (int i = 0; i < 9; i++) {
+            if (!isPartialValid(board, i, i, 0, 8)) {
+                return false;
+            }
+            if (!isPartialValid(board, 0, 8, i, i)) {
+                return false;
+            }
+        }
+        for (int i = 0; i < 9; i = i + 3) {
+            for (int j = 0; j < 9; j = j + 3) {
+                if (!isPartialValid(board, i, i + 2, j, j + 2)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    bool isPartialValid(vector<vector<char>>& board, int x1, int x2, int y1, int y2) {
+        set<char> myset;
+        myset.clear();
+        for (int i = x1; i <= x2; i++) {
+            for (int j = y1; j <= y2; j++) {
+                if (board[i][j] != '.') {
+                    if (myset.find(board[i][j]) != myset.end()) {
+                        return false;
+                    }
+                    myset.insert(board[i][j]);
+                }
+            }
+        }
+        return true;
+    }
+};
+*/
