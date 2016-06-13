@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        //方一：sort,O(NlogN)
+        //方二：
+        int size = nums.size();
+        for (int i = 0; i < size; i++) {
+            while (nums[i] != i + 1) {
+                if (nums[i] >= 1 && nums[i] <= size && nums[i] != nums[nums[i] - 1]) { //注意最后的“不等于”，没有的话会死循环（[1，1]）
+                    swap(nums[i], nums[nums[i] - 1]);
+                }
+                else {
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < size; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+        return size + 1;
+    }
+};
