@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        //方一：用两个vector存下每个地方往左看、往右看的最高值
+        //方二：先找到最高点，然后从两边往最高点累计雨水
+        //方三：双指针，实际与方二思想一致
+        int size = height.size();
+        if (size < 3) {
+            return 0;
+        }
+        int l = 0;
+        int r = size - 1;
+        int maxLeft = 0;
+        int maxRight = 0;
+        int res = 0;
+        while (l < r) {
+            if (height[l] <= height[r]) {
+                if (height[l] > maxLeft) {
+                    maxLeft = height[l];
+                }
+                else {
+                    res += (maxLeft - height[l]);
+                }
+                l++;
+            }
+            else {
+                if (height[r] > maxRight) {
+                    maxRight = height[r];
+                }
+                else {
+                    res += (maxRight - height[r]);
+                }
+                r--;
+            }
+        }
+        return res;
+    }
+};
