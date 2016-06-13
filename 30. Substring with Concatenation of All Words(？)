@@ -32,6 +32,6 @@ public:
         return result;
         */
         //方二：trie树，https://leetcode.com/discuss/20055/accepted-recursive-solution-using-trie-tree
-        //方三：滑动窗口没看懂……
+        //方三：滑动窗口没看懂……https://leetcode.com/discuss/50395/my-24ms-c-solution-o-n-time-using-an-unordered_map
     }
 };
