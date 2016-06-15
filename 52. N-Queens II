@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int totalNQueens(int n) {
+        int res = 0;
+        vector<int> cur(n, -1);
+        dfs(res, cur, n, 0);
+        return res;
+    }
+    void dfs(int& res, vector<int>& cur, int n, int index) {
+        if (n == index) {
+            res++;
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            if (isValid(cur, index, i)) {
+                cur[index] = i;
+                dfs(res, cur, n, index + 1);
+            }
+        }
+    }
+    bool isValid(vector<int>& cur, int row, int pos) {
+        for (int i = 0; i < row; i++) {
+            if (cur[i] == pos || row - i == abs(pos - cur[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
