@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        //方一：DP
+        if (nums.empty()) {
+            return 0;
+        }
+        int res = nums[0];
+        int curMax = nums[0];
+        for (int i = 1; i < nums.size(); i++) {
+            curMax = max(nums[i], curMax + nums[i]);
+            res = max(res, curMax);
+        }
+        return res;
+        //方二：分治,见https://leetcode.com/discuss/13569/share-my-solutions-both-greedy-and-divide-and-conquer
+    }
+};
