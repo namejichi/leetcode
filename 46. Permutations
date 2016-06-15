@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        //方一：使用next_permutation
+        //方二：DFS
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> res;
+        dfs(res, nums, 0);
+        return res;
+    }
+    void dfs(vector<vector<int>>& res, vector<int>& nums, int pos) {
+        if (pos == nums.size()) {
+            res.push_back(nums);
+            return;
+        }
+        for (int i = pos; i < nums.size(); i++) {
+            swap(nums[i], nums[pos]);
+            dfs(res, nums, pos + 1);
+            swap(nums[i], nums[pos]);
+        }
+    }
+};
